@@ -1,7 +1,11 @@
 @import "tailwindcss";
 
+/* `dark:` utilities follow the .dark class on <html>, set by the theme toggle */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Same palette as the CV: dark grey text, teal accent (#138A76 for text,
-   the brighter #1CC4A7 only for decoration). Dark mode follows the OS. */
+   the brighter #1CC4A7 only for decoration). Dark mode = .dark on <html>:
+   the visitor's choice if they made one, otherwise their OS setting. */
 @theme {
   --color-ink: #2f3439;
   --color-muted: #5f666d;
@@ -14,15 +18,14 @@
   --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-ink: #e8ebed;
-    --color-muted: #a3abb2;
-    --color-line: #2c3236;
-    --color-paper: #121517;
-    --color-panel: #1a1e21;
-    --color-accent: #3fd1b5;
-  }
+.dark {
+  --color-ink: #e8ebed;
+  --color-muted: #a3abb2;
+  --color-line: #2c3236;
+  --color-paper: #121517;
+  --color-panel: #1a1e21;
+  --color-accent: #3fd1b5;
+  color-scheme: dark;
 }
 
 html {

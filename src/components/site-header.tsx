@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { profile } from "@/content/profile";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteHeader() {
   return (
@@ -9,11 +10,14 @@ export function SiteHeader() {
           {profile.name}
           <span className="text-accent-bright">.</span>
         </Link>
-        <nav className="flex gap-4 text-sm text-muted sm:gap-6">
-          <a href="/#projects" className="hover:text-ink">Projects</a>
-          <a href="/#experience" className="hover:text-ink">Experience</a>
-          <a href="/#contact" className="hover:text-ink">Contact</a>
-        </nav>
+        <div className="flex items-center gap-4 sm:gap-6">
+          <nav className="hidden gap-6 text-sm text-muted sm:flex">
+            <a href="/#projects" className="hover:text-ink">Projects</a>
+            <a href="/#experience" className="hover:text-ink">Experience</a>
+            <a href="/#contact" className="hover:text-ink">Contact</a>
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
