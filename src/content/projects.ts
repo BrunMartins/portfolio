@@ -13,7 +13,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "grupo-260",
-    title: "PGI 260",
+    title: "Grupo 260 Platform",
     tagline: "Management platform for a scout group",
     description:
       "One back office replacing a Drive full of spreadsheets: members, enrollments, invoicing and reconciliation, inventory, a point of sale for events. Self-hosted on a single home server, deployed through its own CI runners.",

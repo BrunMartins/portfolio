@@ -74,7 +74,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 export function Grupo260() {
   useEffect(() => {
-    document.title = "PGI 260 case study · Bruno Martins";
+    document.title = "Grupo 260 Platform case study · Bruno Martins";
     return () => {
       document.title = "Bruno Martins · Full Stack Developer";
     };
@@ -88,7 +88,7 @@ export function Grupo260() {
 
       <p className="mt-10 font-display text-sm font-semibold uppercase tracking-widest text-accent">Case study</p>
       <h1 className="mt-3 font-display text-4xl font-bold leading-tight tracking-tight">
-        PGI 260: running a scout group's platform on one home server
+        Grupo 260 Platform: a scout group's back office on one home server
       </h1>
       <p className="mt-6 text-lg leading-relaxed text-muted">
         I designed, built and run the internal management platform for Grupo 260, a Portuguese scout group, end to
@@ -113,7 +113,7 @@ export function Grupo260() {
         </p>
         <p>
           Before the platform, the group's records lived in spreadsheets spread across Google Drive, with no single
-          place to find or trust the data. PGI 260 replaces them with one back office, with access set by role
+          place to find or trust the data. The platform (internally PGI 260) replaces them with one back office, with access set by role
           (admin, group leader, treasurer):
         </p>
       </div>
