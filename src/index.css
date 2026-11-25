@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Same palette as the CV: dark grey text, teal accent (#138A76 for text,
+   the brighter #1CC4A7 only for decoration). Dark mode follows the OS. */
+@theme {
+  --color-ink: #2f3439;
+  --color-muted: #5f666d;
+  --color-line: #e3e6e8;
+  --color-paper: #ffffff;
+  --color-panel: #f5f7f7;
+  --color-accent: #138a76;
+  --color-accent-bright: #1cc4a7;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-ink: #e8ebed;
+    --color-muted: #a3abb2;
+    --color-line: #2c3236;
+    --color-paper: #121517;
+    --color-panel: #1a1e21;
+    --color-accent: #3fd1b5;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent-bright) 30%, transparent);
+}
