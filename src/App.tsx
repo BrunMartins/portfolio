@@ -21,10 +21,11 @@ export function App() {
   return (
     // Routes are relative to the base path the site is served from
     <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-      <div className="min-h-screen">
+      {/* Column layout so the footer stays at the bottom on short pages */}
+      <div className="flex min-h-screen flex-col">
         <ScrollToTop />
         <SiteHeader />
-        <main>
+        <main className="flex flex-1 flex-col">
           <Switch>
             <Route path="/" component={Home} />
             <Route path="/projects/grupo-260" component={Grupo260} />
