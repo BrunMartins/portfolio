@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Switch, useLocation } from "wouter";
+import { Route, Router, Switch, useLocation } from "wouter";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Home } from "@/pages/home";
@@ -17,17 +17,20 @@ function ScrollToTop() {
 
 export function App() {
   return (
-    <div className="min-h-screen">
-      <ScrollToTop />
-      <SiteHeader />
-      <main>
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/projects/grupo-260" component={Grupo260} />
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-      <SiteFooter />
-    </div>
+    // Routes are relative to the base path the site is served from
+    <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+      <div className="min-h-screen">
+        <ScrollToTop />
+        <SiteHeader />
+        <main>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/projects/grupo-260" component={Grupo260} />
+            <Route component={NotFound} />
+          </Switch>
+        </main>
+        <SiteFooter />
+      </div>
+    </Router>
   );
 }

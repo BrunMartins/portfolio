@@ -82,7 +82,7 @@ export function Grupo260() {
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-      <a href="/#projects" className="text-sm font-semibold text-accent hover:underline">
+      <a href={`${import.meta.env.BASE_URL}#projects`} className="text-sm font-semibold text-accent hover:underline">
         ← All projects
       </a>
 

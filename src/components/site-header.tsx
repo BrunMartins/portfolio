@@ -12,9 +12,9 @@ export function SiteHeader() {
         </Link>
         <div className="flex items-center gap-4 sm:gap-6">
           <nav className="hidden gap-6 text-sm text-muted sm:flex">
-            <a href="/#projects" className="hover:text-ink">Projects</a>
-            <a href="/#experience" className="hover:text-ink">Experience</a>
-            <a href="/#contact" className="hover:text-ink">Contact</a>
+            <a href={`${import.meta.env.BASE_URL}#projects`} className="hover:text-ink">Projects</a>
+            <a href={`${import.meta.env.BASE_URL}#experience`} className="hover:text-ink">Experience</a>
+            <a href={`${import.meta.env.BASE_URL}#contact`} className="hover:text-ink">Contact</a>
           </nav>
           <ThemeToggle />
         </div>
