@@ -19,6 +19,20 @@ export const profile = {
   ],
 };
 
+export type Course = {
+  name: string;
+  school: string;
+  period: string;
+};
+
+export const education: Course[] = [
+  {
+    name: "IT applied in Management",
+    school: "Escola Secundária Manuel Cargaleiro",
+    period: "2012 – 2015",
+  },
+];
+
 export type Job = {
   role: string;
   company: string;
