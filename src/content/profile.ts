@@ -33,6 +33,27 @@ export const education: Course[] = [
   },
 ];
 
+export type Training = {
+  name: string;
+  note?: string;
+  provider: string;
+  year: string;
+};
+
+export const training: Training[] = [
+  {
+    name: "Psychological First Aid",
+    provider: "ENFIM, AEP's training school",
+    year: "2025",
+  },
+  {
+    name: "Curso de Responsável de Adultos",
+    note: "adult leader management",
+    provider: "ENFIM, AEP's training school",
+    year: "2022",
+  },
+];
+
 export type Job = {
   role: string;
   company: string;

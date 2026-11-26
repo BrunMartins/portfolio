@@ -1,5 +1,5 @@
 import { ProjectCard } from "@/components/project-card";
-import { education, experience, profile } from "@/content/profile";
+import { education, experience, profile, training } from "@/content/profile";
 import { projects } from "@/content/projects";
 
 export function Home() {
@@ -68,6 +68,18 @@ export function Home() {
                   <p className="text-xs font-semibold uppercase tracking-wider text-muted">{course.period}</p>
                   <h3 className="mt-1 font-display font-semibold">{course.name}</h3>
                   <p className="text-sm text-accent">{course.school}</p>
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-8 text-xs font-semibold uppercase tracking-wider text-muted">Training</h3>
+            <ul className="mt-3 space-y-3 text-sm">
+              {training.map((t) => (
+                <li key={t.name}>
+                  <span className="font-semibold">{t.name}</span>
+                  {t.note && <span className="text-muted"> ({t.note})</span>}
+                  <span className="block text-muted">
+                    {t.provider} · {t.year}
+                  </span>
                 </li>
               ))}
             </ul>
