@@ -17,7 +17,7 @@ export function Home() {
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href={`mailto:${profile.email}`}
-            className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 dark:text-paper"
+            className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent hover:opacity-90"
           >
             Get in touch
           </a>

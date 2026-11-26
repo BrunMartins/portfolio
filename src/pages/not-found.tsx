@@ -19,7 +19,7 @@ export function NotFound() {
         <h1 className="mt-4 font-display text-2xl font-bold sm:text-3xl">You're off the map</h1>
         <p className="mx-auto mt-3 max-w-sm text-muted">This page doesn't exist, or it has moved.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3 text-sm font-semibold">
-          <Link href="/" className="rounded-full bg-accent px-5 py-2.5 text-white hover:opacity-90 dark:text-paper">
+          <Link href="/" className="rounded-full bg-accent px-5 py-2.5 text-on-accent hover:opacity-90">
             Back home
           </Link>
           <a

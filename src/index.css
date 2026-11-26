@@ -14,6 +14,8 @@
   --color-panel: #f5f7f7;
   --color-accent: #138a76;
   --color-accent-bright: #1cc4a7;
+  /* Text on accent-coloured buttons */
+  --color-on-accent: #ffffff;
   --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
 }
@@ -25,6 +27,7 @@
   --color-paper: #121517;
   --color-panel: #1a1e21;
   --color-accent: #3fd1b5;
+  --color-on-accent: #121517;
   color-scheme: dark;
 }
 
