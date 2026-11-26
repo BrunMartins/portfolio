@@ -2,4 +2,3 @@ node_modules/
 dist/
 *.tsbuildinfo
 .env*
-_to_delete/
