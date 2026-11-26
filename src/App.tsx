@@ -25,7 +25,7 @@ export function App() {
       <div className="flex min-h-screen flex-col">
         <ScrollToTop />
         <SiteHeader />
-        <main className="flex flex-1 flex-col">
+        <main className="flex flex-1 flex-col [&>*]:w-full">
           <Switch>
             <Route path="/" component={Home} />
             <Route path="/projects/grupo-260" component={Grupo260} />
