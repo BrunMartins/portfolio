@@ -33,6 +33,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Always show the scrollbar track, so short pages (like the 404) don't
+     shift the centred layout sideways. (scrollbar-gutter would leave an
+     empty strip that the header and footer borders stop short of.) */
+  overflow-y: scroll;
 }
 
 body {
