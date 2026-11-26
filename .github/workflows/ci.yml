@@ -1,9 +1,9 @@
 name: CI
 
+# Pushes to main are built (and type-checked) by the deploy workflow,
+# so CI only needs to check pull requests before they're merged.
 on:
   pull_request:
-  push:
-    branches: [main]
 
 jobs:
   build:
