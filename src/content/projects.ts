@@ -30,7 +30,7 @@ export const projects: Project[] = [
     stack: ["C++", "ESP32", "Bluetooth HID"],
     links: [
       { label: "My fork", href: "https://github.com/BrunMartins/ESP32-BLE-Keyboard" },
-      // TODO: add the upstream PR link
+      { label: "Pull request", href: "https://github.com/T-vK/ESP32-BLE-Keyboard/pull/392" },
     ],
   },
   {

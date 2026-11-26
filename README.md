@@ -3,7 +3,7 @@
 My developer portfolio: who I am, what I've built, and a case study of the
 platform I run for a Portuguese scout group.
 
-**Live:** https://brunmartins.github.io/portfolio
+**Live:** https://bfmartins.pt
 
 ## Stack
 

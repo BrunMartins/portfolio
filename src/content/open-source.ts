@@ -18,7 +18,7 @@ export const contributions: Contribution[] = [
       "The library couldn't send F13–F24. I extended the HID report descriptor so ESP32 devices can send keys no app uses by default, which I needed for a Bluetooth Discord mute button.",
     year: "2026",
     status: "open",
-    // TODO: add the upstream PR link
+    pr: "https://github.com/T-vK/ESP32-BLE-Keyboard/pull/392",
   },
 ];
 
