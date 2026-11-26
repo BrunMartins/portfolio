@@ -48,6 +48,6 @@ export const projects: Project[] = [
     description:
       "Opens a GPX route at real paper-map scales (1:25k to 1:500k) with the UTM grid and edge rulers drawn on top, gives any point in MGRS, decimal or DMS, and prints an A4 sheet at 1:25,000. One HTML file, no install.",
     stack: ["JavaScript", "Leaflet", "UTM / MGRS", "GPX"],
-    // TODO: link a live demo if you publish it
+    links: [{ label: "Live demo", href: "https://grupo260.escoteiros.pt/carta-militar" }],
   },
 ];
