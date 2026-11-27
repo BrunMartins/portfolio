@@ -1,4 +1,6 @@
+import { Link } from "wouter";
 import { ProjectCard } from "@/components/project-card";
+import { showOpenSource } from "@/content/open-source";
 import { education, experience, profile, training } from "@/content/profile";
 import { projects } from "@/content/projects";
 
@@ -48,6 +50,11 @@ export function Home() {
               <ProjectCard key={project.slug} project={project} />
             ))}
           </div>
+          {showOpenSource && (
+            <Link href="/open-source" className="mt-8 inline-block font-semibold text-accent hover:underline">
+              See my open-source contributions →
+            </Link>
+          )}
         </div>
       </section>
 

@@ -20,7 +20,7 @@ export function OpenSource() {
       <p className="font-display text-sm font-semibold uppercase tracking-widest text-accent">Open source</p>
       <h1 className="mt-3 font-display text-4xl font-bold leading-tight tracking-tight">Contributions</h1>
       <p className="mt-6 text-lg leading-relaxed text-muted">
-        Changes I've contributed to other people's projects, usually because I ran into the problem myself.
+        Pull requests and bug investigations in other people's projects, mostly tools I use myself.
       </p>
 
       <ol className="mt-12 space-y-6">
@@ -31,6 +31,9 @@ export function OpenSource() {
                 {c.project}
               </a>
               <span className="text-muted">{c.year}</span>
+              <span className="rounded-full border border-line px-2 py-0.5 normal-case tracking-normal text-muted">
+                {c.kind}
+              </span>
               {c.status && (
                 <span className={`rounded-full border px-2 py-0.5 normal-case tracking-normal ${statusStyle[c.status]}`}>
                   {c.status}
@@ -39,16 +42,13 @@ export function OpenSource() {
             </div>
             <h2 className="mt-2 font-display text-xl font-semibold">{c.title}</h2>
             <p className="mt-3 leading-relaxed text-muted">{c.description}</p>
-            {c.pr && (
-              <a
-                href={c.pr}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 inline-block text-sm font-semibold text-accent hover:underline"
-              >
-                Pull request ↗
-              </a>
-            )}
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold">
+              {c.links.map((link) => (
+                <a key={link.href} href={link.href} target="_blank" rel="noreferrer" className="text-accent hover:underline">
+                  {link.label} ↗
+                </a>
+              ))}
+            </div>
           </li>
         ))}
       </ol>
