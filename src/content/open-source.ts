@@ -16,6 +16,20 @@ export const contributions: Contribution[] = [
   {
     project: "wouter",
     repo: "https://github.com/molefrog/wouter",
+    kind: "Pull request",
+    title: "Fix doubled # in hash-routing link hrefs",
+    description:
+      "With hash routing, a link written as #/app rendered as ##/app, even though navigating to the same path worked. I changed the href formatter to only add # when the path doesn't already start with one, and added tests for that case and for a # later in the path, so anchors keep working.",
+    year: "2026",
+    status: "open",
+    links: [
+      { label: "Pull request", href: "https://github.com/molefrog/wouter/pull/587" },
+      { label: "Issue", href: "https://github.com/molefrog/wouter/issues/586" },
+    ],
+  },
+  {
+    project: "wouter",
+    repo: "https://github.com/molefrog/wouter",
     kind: "Investigation",
     title: "Diagnosed a hash-routing bug report",
     description:
