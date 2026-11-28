@@ -4,6 +4,10 @@ import { ArchitectureDiagram } from "@/components/architecture-diagram";
 
 const facts = [
   ["Role", "Lead developer and infrastructure (volunteer)"],
+  [
+    "Team",
+    "I built most of the platform. Another volunteer developer contributed from 2023 to 2026, on division management, scouts' personal progress and invoicing. One volunteer currently helps with maintenance and bug fixes.",
+  ],
   ["Timeframe", "2016 to present"],
   [
     "Evolution",
@@ -169,7 +173,7 @@ export function Grupo260() {
       <ul className="mt-3 list-disc space-y-2 pl-5 text-muted marker:text-accent-bright">
         <li>No budget for cloud hosting, so it runs on a small home server</li>
         <li>Single organisation, so no multi-tenancy</li>
-        <li>Maintained by one to three volunteers, so deploys and upkeep had to be automated</li>
+        <li>Maintained by a small volunteer team (one to three people over the years), so deploys and upkeep had to be automated</li>
       </ul>
 
       <H2>Architecture</H2>
@@ -190,8 +194,8 @@ export function Grupo260() {
 
       <H2>Challenges solved</H2>
       <p className="mt-4 leading-relaxed text-muted">
-        Running production on one small box means every failure is yours to diagnose. These are the ones worth
-        telling.
+        With production on a single home server, there's no one else to hand a problem to. These are the ones that
+        taught me the most.
       </p>
       <div className="mt-8 space-y-6">
         {challenges.map((c) => (
