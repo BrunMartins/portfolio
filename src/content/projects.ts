@@ -34,6 +34,15 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "on-air-sign",
+    title: "On Air sign",
+    tagline: "ESP32 retrofit driven by a Discord bot",
+    description:
+      "An off-the-shelf On Air light that I rewired with an ESP32 and a MOSFET. A Discord bot watches my voice state and switches it through a token-protected local API, so people at home know when I'm in a call. The sign's own button still works.",
+    stack: ["TypeScript", "discord.js", "C++", "ESP32", "PlatformIO"],
+    links: [{ label: "Code and wiring", href: "https://github.com/BrunMartins/on-air-discord-bot" }],
+  },
+  {
     slug: "house-hunter",
     title: "House Hunter",
     tagline: "Automated property search",
