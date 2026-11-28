@@ -5,7 +5,14 @@ import { ArchitectureDiagram } from "@/components/architecture-diagram";
 const facts = [
   ["Role", "Lead developer and infrastructure (volunteer)"],
   ["Timeframe", "2016 to present"],
-  ["App", "Next.js (Server Actions), Express + TypeScript API with MikroORM, PostgreSQL 18, Redis (BullMQ, Socket.IO)"],
+  [
+    "Evolution",
+    "Started as a React app with an Express API. The frontend moved to Next.js in early 2024; moving the backend into it is the next step.",
+  ],
+  [
+    "App",
+    "Next.js, with Server Actions as a server-side layer in front of the API that keeps secrets and session data off the client; Express + TypeScript API with MikroORM, PostgreSQL 18, Redis (BullMQ, Socket.IO)",
+  ],
   ["Infrastructure", "ZimaBoard home server, Docker Swarm, Nginx, self-hosted GitHub Actions runners"],
 ];
 
@@ -17,52 +24,86 @@ const features = [
   ["Administration", "Users and roles, audit log, a secure shared credentials vault, real-time notifications"],
 ];
 
-const challenges = [
+// Why the stack looks the way it does, with the trade-off each choice accepts.
+const decisions = [
   {
-    problem: "Moving to new hardware",
-    cause: "ZimaBoard 1 to ZimaBoard 2, with the NVMe/RAID moved across",
-    fix: "Fixed renamed network interfaces, the bond config, DNS and Docker Swarm in under 30 minutes; moved /home off the eMMC onto NVMe.",
+    title: "Next.js in front of the Express API",
+    why: "The Express API is large, so instead of a risky big-bang rewrite I ported the frontend first. Server Actions sit between the browser and the API as a server-side layer, keeping API secrets and session data off the client. The API's endpoints can then move into Next.js one at a time.",
+    tradeoff: "Until the migration is done, there are two server layers to maintain, and each request takes an extra hop.",
   },
   {
-    problem: "Site unreachable",
-    cause: "The No-IP dynamic DNS hostname expired",
-    fix: "Replaced it with DuckDNS, updated by a minimal Alpine container running as a Swarm service.",
+    title: "Single-node Docker Swarm",
+    why: "Swarm gives zero-downtime rolling deploys, which plain Docker Compose doesn't, with far less overhead than k3s on a 4-core, 8 GB machine. It reuses the same compose files, so there's little for a volunteer team to learn.",
+    tradeoff: "One node means the server is a single point of failure. That's acceptable for an internal tool whose users can wait for a repair, and it's part of why backups are the next priority.",
   },
   {
-    problem: "Next.js builds crashing",
-    cause: "The build ran out of memory on an 8 GB machine",
-    fix: "Capped the Node heap (--max-old-space-size=2560) so builds finish without starving other services.",
+    title: "Odoo for bank data",
+    why: "The group ran on Odoo from 2016 to 2024. Invoicing moved into the platform at the end of 2024 and went live at the start of the January 2025 fiscal year, but Odoo stays for one job: fetching bank transactions for reconciliation. It's certified to connect to bank APIs, which a small group couldn't get on its own, and a single Odoo app is free. I'm evaluating Enable Banking as a direct replacement, testing it first in a personal project.",
+    tradeoff: "Bank data depends on a third-party system and a sync job, one more moving part that can break.",
   },
   {
-    problem: "Deploys broke open tabs",
-    cause: "Server Actions of pages opened before a deploy stop working",
-    fix: "Added a version endpoint and a watcher that reloads stale tabs, saving and restoring the fields the user had edited.",
+    title: "Cloudflare and dynamic DNS",
+    why: "The national association manages every group's DNS record in its own Cloudflare account, and groups can't edit theirs. What a group can do is have it point at a name it controls, so ours points at a dynamic DNS hostname that a small container on the server keeps updated with the home connection's changing IP.",
+    tradeoff: "Two outside parties sit in the chain: changing the record needs the association, and the dynamic DNS service is free, with no guarantees.",
+  },
+];
+
+// Each challenge is told as situation, problem and solution; routine work is a short list.
+type Challenge = {
+  title: string;
+  situation?: string;
+  problem?: string;
+  solution?: string;
+  items?: string[];
+};
+
+const challenges: Challenge[] = [
+  {
+    title: "Deploys broke open tabs",
+    situation:
+      "Next.js Server Actions are tied to the build that served the page, so a tab opened before a deploy keeps calling actions that no longer exist on the server.",
+    problem:
+      "The first form submit after a deploy failed with \u201cFailed to find Server Action\u201d. A volunteer could fill in a long form, press save, and lose the work.",
+    solution:
+      "Added a version endpoint that changes with every deploy, and a watcher at the top of the React tree that checks it every 5 minutes and whenever the tab regains focus. When the tab is stale, the page reloads. On pages with forms, it first saves the entered values to sessionStorage by field name (never passwords) and fills them back in after the reload.",
   },
   {
-    problem: "Redirect loop and broken deploys",
-    cause: "Cloudflare and Nginx disagreeing on HTTPS, plus failing SSH deploys",
-    fix: "Fixed the Nginx/Cloudflare config and the deploy path.",
+    title: "Moving to new hardware",
+    situation:
+      "The platform moved from a ZimaBoard 1 to a ZimaBoard 2, taking its NVMe system drive and RAID data drives with it. Beforehand, I captured the disks, fstab, network bond and link speeds, and flagged the two likely failure points: renamed network interfaces and the boot order.",
+    problem:
+      "Storage came up untouched, since fstab used UUIDs. As expected, the network interfaces got new names, so the bond had no members and the server came up on a different IP. Unexpectedly, NetworkManager also wrote a link-local IPv6 resolver into /etc/resolv.conf, which broke DNS.",
+    solution:
+      "Updated the bond members in /etc/network/interfaces to bring the server back on its static IP, pointed DNS at the gateway, and locked resolv.conf against overwrites. Then checked the RAID array, the Swarm services and both network links (~940 Mbit/s with iperf3). Downtime was under an hour, announced to the group in advance.",
   },
   {
-    problem: "Security patching",
-    cause: "CVEs in Nginx (nginx2root)",
-    fix: "Upgraded Nginx from the official repo to 1.30.7.",
+    title: "Self-hosted CI and builds",
+    situation: "CI runs on two self-hosted GitHub Actions runners, on the same 8 GB server as production.",
+    problem: "Next.js builds ran out of memory, every run rebuilt from scratch, and deploys started failing over SSH.",
+    solution:
+      "Capped the build's Node heap so builds finish without starving production. Split the runners into two Swarm services, each with a persistent cache volume that also keeps the Next.js build cache. Traced the failing deploys to a deleted SSH deploy key, and moved deploy keys into GitHub Secrets, written at run time and removed afterwards.",
   },
   {
-    problem: "Slow, flaky CI",
-    cause: "Self-hosted runners rebuilding from scratch",
-    fix: "Moved runners to Debian bookworm, split them into two Swarm services with persistent cache volumes, fixed cleanup traps.",
+    title: "Security patching",
+    situation: "Nginx is the public entry point and serves HTTP/2.",
+    problem:
+      "Critical remote-code-execution bugs in Nginx's HTTP/2 handling (CVE-2026-123007, CVE-2026-123633) left the reverse proxy exposed.",
+    solution:
+      "Upgraded to Nginx 1.30.7 from the official repo two days after the fix was released on 18 November 2026.",
   },
   {
-    problem: "Database upgrade",
-    // TODO: add the reason for the upgrade
-    cause: "PostgreSQL 16 in production",
-    fix: "Migrated to PostgreSQL 18.",
+    title: "Routine upkeep",
+    items: [
+      "Replaced an expired No-IP dynamic DNS hostname with DuckDNS, updated by a small Alpine container running as a Swarm service.",
+      "Fixed a redirect loop caused by Cloudflare and Nginx disagreeing about HTTPS.",
+      "Upgraded PostgreSQL 16 to 18 to stay on a current, supported release with security fixes: dumped with pg_dumpall into a second container running alongside the old one, compared row counts, then switched over.",
+    ],
   },
 ];
 
 const next = [
-  "Automated off-site backups (Restic to S3)",
+  "Merge the Express API into Next.js. The Server Actions already sit between the browser and the API, so they act as the transitional layer while endpoints move over",
+  "Automated off-site backups (Restic to S3), scheduled for Q1 2027. Until then, the lack of off-site backups is a known risk that I've accepted",
   "External uptime monitoring and self-hosted error tracking (evaluating Gatus and Bugsink)",
   "Integration with the national federation's membership system (Orgo)",
   "A built-in wiki for the group (spec drafted)",
@@ -92,8 +133,7 @@ export function Grupo260() {
       </h1>
       <p className="mt-6 text-lg leading-relaxed text-muted">
         I designed, built and run the internal management platform for Grupo 260, a Portuguese scout group, end to
-        end: the app, the server it runs on and the pipeline that deploys it. It runs in production on self-hosted
-        hardware with no cloud bill.
+        end: the app, the server it runs on and the pipeline that deploys it.
       </p>
 
       <dl className="mt-10 grid gap-x-8 gap-y-4 rounded-2xl border border-line bg-panel p-6 sm:grid-cols-[auto_1fr]">
@@ -135,29 +175,63 @@ export function Grupo260() {
       <H2>Architecture</H2>
       <ArchitectureDiagram />
 
+      <H2>Design decisions</H2>
+      <dl className="mt-6 divide-y divide-line border-y border-line">
+        {decisions.map((d) => (
+          <div key={d.title} className="py-5">
+            <dt className="font-display text-lg font-semibold">{d.title}</dt>
+            <dd className="mt-2 leading-relaxed text-muted">{d.why}</dd>
+            <dd className="mt-3 text-sm leading-relaxed text-muted">
+              <span className="font-semibold text-ink">Trade-off:</span> {d.tradeoff}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
       <H2>Challenges solved</H2>
       <p className="mt-4 leading-relaxed text-muted">
         Running production on one small box means every failure is yours to diagnose. These are the ones worth
         telling.
       </p>
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-6">
         {challenges.map((c) => (
-          <section key={c.problem} className="rounded-2xl border border-line p-5">
-            <h3 className="font-display font-semibold">{c.problem}</h3>
-            <p className="mt-1 text-sm text-muted">
-              <span className="font-semibold text-ink">Cause:</span> {c.cause}
-            </p>
-            <p className="mt-2 leading-relaxed">{c.fix}</p>
+          <section key={c.title} className="rounded-2xl border border-line p-5 sm:p-6">
+            <h3 className="font-display text-lg font-semibold">{c.title}</h3>
+            {c.items ? (
+              <ul className="mt-3 list-disc space-y-2 pl-5 leading-relaxed text-muted marker:text-accent-bright">
+                {c.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <dl className="mt-3 space-y-3">
+                {(
+                  [
+                    ["Situation", c.situation],
+                    ["What went wrong", c.problem],
+                    ["What I did", c.solution],
+                  ] as const
+                ).map(([label, text]) =>
+                  text ? (
+                    <div key={label}>
+                      <dt className="text-xs font-semibold uppercase tracking-wider text-accent">{label}</dt>
+                      <dd className="mt-1 leading-relaxed text-muted">{text}</dd>
+                    </div>
+                  ) : null,
+                )}
+              </dl>
+            )}
           </section>
         ))}
       </div>
 
       <H2>Results and what's next</H2>
       <p className="mt-4 leading-relaxed text-muted">
-        The platform runs in production for the group with no cloud hosting bill (the only running cost is the
-        server's power draw, an estimated €1.50–3 a month), and every push deploys through a self-hosted CI pipeline.
+        The platform is the group's day-to-day system. It holds 101 members, and 9 to 10 of the 13 leaders use it
+        themselves in a typical month, mostly without needing help. Since invoicing moved into the app, it has issued over 1,600 invoices
+        (1,215 so far in 2026, up from 386 in 2025) and matched about 900 bank transactions to them. The only running
+        cost is the server's power draw, an estimated €1.50–3 a month.
       </p>
-      {/* TODO: add one or two real numbers — users, time running, time saved */}
       <p className="mt-6 leading-relaxed text-muted">Planned next:</p>
       <ul className="mt-3 list-disc space-y-2 pl-5 text-muted marker:text-accent-bright">
         {next.map((item) => (

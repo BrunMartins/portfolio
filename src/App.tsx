@@ -8,11 +8,16 @@ import { NotFound } from "@/pages/not-found";
 import { OpenSource } from "@/pages/open-source";
 import { showOpenSource } from "@/content/open-source";
 
-// Start each page at the top, unless the URL points at a section (#projects)
+// Start each page at the top, or at the section the URL points to (#projects).
+// The browser's own jump to the #section happens before React has rendered it,
+// so after a full page load (e.g. a header link from another page) do it here.
 function ScrollToTop() {
   const [location] = useLocation();
   useEffect(() => {
-    if (!window.location.hash) window.scrollTo(0, 0);
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    const target = id ? document.getElementById(id) : null;
+    if (target) target.scrollIntoView();
+    else window.scrollTo(0, 0);
   }, [location]);
   return null;
 }
